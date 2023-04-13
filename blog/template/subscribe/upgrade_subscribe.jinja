@@ -1,0 +1,43 @@
+{% extends "main/base.jinja" %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="center">
+                <div class="col-md-6 col-md-8 col-lg-6 ">
+                    <h4>ترقية الاشتراك إلى اشتراك سنوي</h4>
+                    <form class="payment-form shadow-lg bg-body rounded p-3 m-3" method="post">
+                        <legend>
+                            تفاصيل الاشتراك:
+                            <br/>
+                            <small>عدد {{ new_details.sub_description }}</small>
+                            <p>سيتم تجديد الاشتراك بشكل سنوي تِلقائيا، ويمكنك إلغاء الاشتراك من صفحتك الشخصية.</p>
+                            <p>
+                                المبلغ الذي سيتم شحنه من بطاقتك في حال الترقية إلى الاشتراك السنوي، وبحساب الايام من الاشتراك السابق هي:
+                                <strong>{{ '$ ' ~ new_details.change_value }}</strong>
+                            </p>
+                        </legend>
+                        <hr/>
+                        <p>معلومات البطاقة البنكية التي سيتم شحنها:</p>
+                        <div class="payment-card">
+                            <div class="row">
+                                <div class="col">
+                                    <h2>**** **** **** {{ new_details.last4 }}</h2>
+                                    <small> <strong>exp:</strong> {{ new_details.exp_month ~ "/" ~ new_details.exp_year }}</small>
+                                </div>
+                                <div class="col-5">
+                                    <i class="fa fa-cc-{{ new_details.brand }} payment-icon-big cc-icon text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('subscribe_controller.subscription_upgrade', price_id=price_id) }}"
+                               class="btn btn-sm btn-success"
+                               role="button">ترقية</a>
+                            <a href="{{ url_for('subscribe_controller.change_payment_method') }}" class="btn btn-sm btn-danger" role="button">تغيير البطاقة</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

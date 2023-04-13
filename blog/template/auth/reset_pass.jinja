@@ -1,0 +1,21 @@
+{% extends "main/base.jinja" %}
+{% from 'partials/_macros.jinja' import form_macro %}
+{% block content %}
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="content-section shadow-lg p-3 mb-4 bg-body rounded m-4 col-md-6">
+                <form method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">
+                            ادخل كلمة السر الجديدة
+                        </legend>
+                        {{ form_macro(form.password) }}
+                        {{ form_macro(form.confirm_password) }}
+                    </fieldset>
+                    <div class="form-group">{{ form.submit(class="btn mainButton") }}</div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

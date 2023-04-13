@@ -1,0 +1,35 @@
+{% extends "main/base.jinja" %}
+{% from 'partials/_macros.jinja' import form_macro %}
+{% block content %}
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="content-section shadow-lg p-3 mb-4 bg-body rounded m-4 col-md-6">
+                <form method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">
+                            تسجيل الدخول
+                        </legend>
+                        {{ form_macro(form.email) }}
+                        {{ form_macro(form.password) }}
+                        <div class="form-check">
+                            {{ form.remember(class="form-check-input") }}
+                            {{ form.remember.label(class="form-check-label") }}
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        {{ form.submit(class="btn mainButton") }}
+                        <small class="text-muted ml-2">
+                            <a href="{{ url_for('auth_controller.reset_request') }}">نسيت كلمة السر؟</a>
+                        </small>
+                    </div>
+                </form>
+            </div>
+            <div class="border-top pt-3 border-top pt-3 col-md-6">
+                <small class="text-muted">
+                    ليس لديك حساب؟ <a class="ml-2" href="{{ url_for('auth_controller.user_register') }}">قم بإنشاء حساب جديد الآن</a>
+                </small>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

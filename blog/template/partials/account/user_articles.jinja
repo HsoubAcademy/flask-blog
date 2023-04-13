@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col shadow-lg p-3 mb-5 bg-body rounded">
+        <h3 class="textColor">مقالاتي</h3>
+        <hr />
+        {% if current_user.is_admin %}
+            <div class="table-responsive">
+                <table class="table text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">الإجراء</th>
+                            <th scope="col">المقالات</th>
+                            <th scope="col">تاريخ النشر</th>
+                            <th scope="col">الإعجابات</th>
+                        </tr>
+                    </thead>
+                    {% for articles in current_user.articles %}
+                        <tbody>
+                            <tr class="align-middle">
+                                <td>{{ loop.index + pagination.skip }}</td>
+                                <td>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="btn-group">
+                                            <div>
+                                                <a href="{{ url_for('article_controller.article_update', id=articles.id) }}"
+                                                   class="btn btn-sm mainButtonWhite"
+                                                   role="button">تعديل</a>
+                                            </div>
+                                            <div>
+                                                <a href="{{ url_for('article_controller.article_delete', id=articles.id) }}"
+                                                   class="btn btn-sm btn-danger"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#articleModal"
+                                                   data-bs-url="{{ url_for('article_controller.article_delete', id=articles.id) }}"
+                                                   data-bs-title="{{ articles.title }}"
+                                                   role="button">حذف</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('article_controller.article_show', id=articles.id) }}"
+                                       class="text-decoration-none link-secondary fs-6 text-start text-break">{{ articles.title }}</a>
+                                </td>
+                                <td>{{ articles.created_date.strftime('%Y-%m-%d') }}</td>
+                                <td>{{ articles.likes|length }}</td>
+                            </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <p>لم تكتب أي مقال حتى الآن.</p>
+        {% endif %}
+    </div>
+</div>

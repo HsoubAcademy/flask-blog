@@ -1,0 +1,50 @@
+{% extends "main/base.jinja" %}
+{% from 'partials/_macros.jinja' import form_macro %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col shadow-lg p-3 mb-5 bg-body rounded">
+        <div class="content-section">
+          <form method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+              <legend class="border-bottom mb-4">
+                {{ legend }}
+              </legend>
+              <div class="row">
+                <div class="col">
+                  {# title #}
+                  {{ form_macro(form.title) }}
+                  {# Image #}
+                  <div class="form-group mt-4">
+                    {{ form.article_img.label(class='') }}
+                    {{ form.article_img(class="form-control-file form-control-file-lg", onchange="image_preview(event)") }}
+                    {% if form.article_img.errors %}
+                      <ul class="error">
+                        {% for error in form.article_img.errors %}<li class="text-danger">{{ error }}</li>{% endfor %}
+                      </ul>
+                    {% endif %}
+                  </div>
+                </div>
+                {# Image Preview #}
+                <div class="col">
+                  <img {% if form.article_img.data %} src=" {{ url_for('static', filename='images/'+form.article_img.data|string) }} " {% else %} src=" {{ url_for('static', filename='images/default.png') }} " {% endif %}
+                       class="ImgPreviewClass"
+                       alt="Article Image"/>
+                </div>
+              </div>
+            </fieldset>
+            {# Content #}
+            {{ form_macro(form.content) }}
+            {# Button #}
+            <div class="form-group">{{ form.submit(class="btn mainButton") }}</div>
+          </form>
+          {{ ckeditor.load() }}
+          {{ ckeditor.config(name='content', height='300', contentsLangDirection='rtl', contentsLanguage='ar', language='ar', defaultLanguage='ar') }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/ckeditor_cfg.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/image_preview.js') }}"></script>
+{% endblock content %}

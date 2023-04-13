@@ -1,0 +1,70 @@
+{% extends "main/base.jinja" %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-md-8 col-lg-10 mx-auto">
+        <h2 class="blog-post-title display-4 fst-italic m-4 text-center">{{ article.title }}</h2>
+        <div class="media d-flex justify-content-center mb-2">
+          <img src="{{ url_for('static', filename='images/'+article.article_img) }}"
+               class="img-fluid w-75 h-auto"
+               alt="img"/>
+        </div>
+        <article class="blog-post">
+          <p class="blog-post-meta col-sm-8 col-md-8 col-lg-8">
+            {{ article.created_date.strftime('%Y-%m-%d') }} بواسطة {{ article.user.username }}
+          </p>
+          <div class="blog-post-content">
+            {% if customer and customer.status == "active" or current_user.is_admin %}
+              {{ article.content | safe }}
+            {% else %}
+              {{ article.content[:1000] | safe }}
+              <div class="extra">{{ article.content[1000:1500] | safe }}</div>
+            {% endif %}
+          </div>
+        </article>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8 col-md-8 col-lg-8 mx-auto">
+        {% if customer and customer.status == "active" or current_user.is_admin %}
+        {% elif customer and not customer.status == "active" %}
+          <div class="d-grid gap-2">
+            <a href="{{ url_for('subscribe_controller.subscription') }}" class="btn mainButtonWhite" role="button">اشترك معنا لتكمل قراءة المقالة</a>
+          </div>
+        {% else %}
+          <div class="d-grid gap-2">
+            <a href="{{ url_for('subscribe_controller.subscription') }}" class="btn mainButtonWhite" role="button">اشترك معنا لتكمل قراءة المقالة</a>
+            <a href="{{ url_for('auth_controller.user_login') }}"
+               class="btn btn-outline-success"
+               role="button">لديك حساب؟ سجل الدخول الآن.</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="d-flex justify-content-between">
+      <div>
+        <a href="{{ url_for('main_controller.home') }}"
+           class="btn btn-sm btn-outline-secondary mb-4"
+           role="button">→ المقالات</a>
+      </div>
+      <div class="d-flex justify-content-end">
+        <small class="text-muted">
+          <br />
+          <div class="text-center">
+            {% if current_user.id and current_user.is_admin or customer and customer.status == "active" %}
+              <i class="{{ 'fas fa-thumbs-up fa-2x' if current_user.id in article.likes|map(attribute='liked_user') else 'far fa-thumbs-up fa-2x' }}"
+                 onclick="likeArticle({{ article.id }})"
+                 id="like-button-{{ article.id }}"></i>
+            {% elif not customer or customer and customer.status != "active" %}
+              <a href=""><i class="far fa-thumbs-up fa-2x"></i></a>
+            {% else %}
+              <a href="{{ url_for('auth_controller.user_login') }}"><i class="far fa-thumbs-up fa-2x"></i></a>
+            {% endif %}
+          </div>
+          الإعجابات <span id="likes-count-{{ article.id }}">{{ article.likes|length }}</span></small
+          >
+        </div>
+      </div>
+    </div>
+    <script src="{{url_for('static', filename='js/like_func.js')}}"></script>
+  {% endblock content %}

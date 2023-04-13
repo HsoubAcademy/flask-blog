@@ -1,0 +1,33 @@
+<div class="modal fade"
+     id="exampleModal"
+     tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">إلغاء الاشتراك</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>هل أنت متيقن من رغبتك في إلغاء الاشتراك؟</li>
+                    <li>
+                        في حال موافقتك سيتم إلغاء عملية الاشتراك التلقائي، ولن تتمكن من الوصول لمحتوى المقالات عند انتهاء مدة اشتراكك الموضحة ضمن صفحتك الشخصية.
+                    </li>
+                    <li>يمكنك أيضا إعادة تفعيل الاشتراك قبل نهاية مدة الاشتراك.</li>
+                    <li>في حال رغبت بحذف اشتراكك تماما يمكنك مراسلة إدارة الموقع.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-sm btn-secondary"
+                        data-bs-dismiss="modal">تراجع</button>
+                <a href="{{ url_for('subscribe_controller.subscription_cancel', is_canceled = True) }}" class="btn btn-sm btn-danger" role="button">إلغاء اشتراكي</a>
+            </div>
+        </div>
+    </div>
+</div>

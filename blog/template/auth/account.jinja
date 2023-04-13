@@ -1,0 +1,15 @@
+{% extends "main/base.jinja" %}
+{# modals #}
+{% include "partials/account/modal_account.jinja" %}
+{% include "partials/modal_article.jinja" %}
+{% block content %}
+  <div class="container">
+    {# User Details  Section #}
+    {% include "partials/account/user_detail.jinja" %}
+    {# User Articles Section #}
+    {% if current_user.is_admin %}
+      {% include "partials/account/user_articles.jinja" %}
+    {% endif %}
+  </div>
+  <script src="{{url_for('static', filename='js/modal_article.js')}}"></script>
+{% endblock content %}

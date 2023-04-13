@@ -1,0 +1,12 @@
+{% extends "main/base.jinja" %}
+{% block content %}
+  <div class="d-flex align-items-center justify-content-center">
+    <div class="text-center">
+      <h1 class="display-1 fw-bold">{{ error_code }}</h1>
+      <p class="fs-3">
+        <span class="text-danger">عذرا !</span> الصفحة المطلوبة غير موجودة.
+      </p>
+      <a href="{{ url_for('main_controller.home') }}" class="btn mainButton">عد للصفحة الرئيسية</a>
+    </div>
+  </div>
+{% endblock content %}

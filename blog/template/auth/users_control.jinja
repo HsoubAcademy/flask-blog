@@ -1,0 +1,67 @@
+{% extends "main/base.jinja" %}
+<!-- Modal -->
+{% include "partials/modal_article.jinja" %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col shadow-lg p-3 mb-5 bg-body rounded">
+        <h3 class="textColor">لائحة المستخدمين</h3>
+        <hr />
+        <div class="table-responsive">
+          <table class="table text-center">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">صلاحيات</th>
+                <th scope="col">حالة الاشتراك</th>
+                <th scope="col">تاريخ الاشتراك</th>
+                <th scope="col">بريد المستخدم</th>
+                <th scope="col">اسم المستخدم</th>
+                <th scope="col">معرف المستخدم</th>
+              </tr>
+            </thead>
+            {% for user in users_list %}
+              <tbody>
+                <tr class="align-middle">
+                  <td>{{ loop.index + pagination.skip }}</td>
+                  <td>
+                    {% if user.username == "owner" %}
+                      <small>المالك</small>
+                    {% elif user.is_admin == true %}
+                      <a href="{{ url_for('auth_controller.role_revoke', user_id=user.id) }}"
+                         class="btn btn-sm btn-danger m-0 p-1"
+                         role="button">تخفيض</a>
+                    {% else %}
+                      <a href="{{ url_for('auth_controller.role_grant', user_id=user.id) }}"
+                         class="btn btn-sm btn-success m-0 p-1"
+                         role="button">ترقية</a>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if user.stripe_customers[0] %}
+                      {{ user.stripe_customers[0].status | replace('None', "ينقص مرحلة الدفع") | replace("active", 'مستمر') }}
+                    {% else %}
+                      غير مشترك
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if user.stripe_customers[0] %}
+                      {{ user.stripe_customers[0].subscription_start }}
+                    {% else %}
+                    {% endif %}
+                  </td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.id }}</td>
+                </tr>
+              </tbody>
+            {% endfor %}
+          </table>
+          <nav aria-label="Page navigation">
+            <div class="pagination justify-content-center">{{ pagination.links }}</div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

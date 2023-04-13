@@ -1,0 +1,37 @@
+{% extends "main/base.jinja" %}
+{% from 'partials/_macros.jinja' import box %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <!-- Box -->
+          {{ box("أرباح الشهر", "مقارنة مع الشهر السابق", monthly_data['month_subs_sum'] ~ "$", monthly_data['month_sum_percentage'], "fas fa-coins fa-2x") }}
+          {{ box("مشتركين الشهر", "مقارنة مع الشهر السابق", monthly_data['month_subs_count'], monthly_data['month_count_percentage'], "fas fa-user-plus fa-2x") }}
+          {{ box("مشتركين الشهر", "مقارنة مع مجمل الاشتراكات", monthly_data['total_count'], monthly_data['total_count_percentage'], "fas fa-users fa-2x") }}
+          {{ box("أرباح الشهر", "مقارنة مع مجمل الأرباح", monthly_data['total_sum'] ~ "$", monthly_data['total_sum_percentage'], "fas fa-money-bill-trend-up fa-2x") }}
+          
+        </div>
+        <div class="mt-4">
+          <div class="card">
+            <div class="card-header pb-0">
+              <h6>نظرة عامة على الاشتراكات</h6>
+              <p class="text-sm">
+                <i class="{{ 'fa fa-arrow-up text-success' if monthly_data['month_count_percentage'] > 0 else 'fa fa-arrow-down text-danger' }}"></i>
+                <span class="font-weight-bold">{{monthly_data['month_count_percentage'] | int }}% تغيير</span>
+                عن الشهر السابق
+              </p>
+            </div>
+            <div class="card-body p-3">
+              <!-- plot -->
+              <div id="chart" class="chart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
+  <script> let chart = {{ graph_json | safe }} </script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/subscribe_plot.js')}}"></script>
+{% endblock content %}

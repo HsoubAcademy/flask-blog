@@ -1,0 +1,28 @@
+{% extends "main/base.jinja" %}
+{% from 'partials/_macros.jinja' import form_macro %}
+{% block content %}
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="content-section shadow-lg p-3 mb-4 bg-body rounded m-4 col-md-6">
+                <form method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">
+                            إنشاء حساب جديد
+                        </legend>
+                        {{ form_macro(form.username) }}
+                        {{ form_macro(form.email) }}
+                        {{ form_macro(form.password) }}
+                        {{ form_macro(form.confirm_password) }}
+                    </fieldset>
+                    <div class="form-group">{{ form.submit(class="btn mainButton") }}</div>
+                </form>
+            </div>
+            <div class="border-top pt-3 border-top pt-3 col-md-6">
+                <small class="text-muted">
+                    لديك حساب؟  <a class="ml-2" href="{{ url_for('auth_controller.user_login') }}">تسجيل الدخول</a>
+                </small>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

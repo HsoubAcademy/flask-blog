@@ -1,0 +1,90 @@
+{% from 'partials/_macros.jinja' import active %}
+<div class="container-fluid mb-4 nav-bg">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="{{ url_for('main_controller.home') }}">مدونة حسوب</a>
+      <button type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              class="navbar-toggler"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-between"
+           id="navbarNav">
+        <div>
+          <ul class="navbar-nav mr-auto d-flex align-items-center">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main_controller.home') }}">المقالات</a>
+            </li>
+            {# owner #}
+            {% if current_user.username == "owner" %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                   href="#"
+                   id="navbarDropdown"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false"> لوحة التحكم </a>
+                <ul class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a class="dropdown-item {{ active('sub-panel/statistics') }}" href="{{ url_for('auth_controller.sub_panel') }}">الاشتراكات</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item {{ active('sub-panel/users-control') }}" href="{{ url_for('auth_controller.users_control') }}">المستخدمين</a>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a class="dropdown-item {{ active('article/article_add') }}"
+                       href="{{ url_for('article_controller.article_add') }}">إضافة مقالة</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item {{ active('article/articles_list') }}"
+                       href="{{ url_for('article_controller.articles_list') }}">لائحة المقالات</a>
+                  </li>
+                </ul>
+              </li>
+            {% elif current_user.username != "owner" and current_user.is_admin == true %}
+              <li class="nav-item">
+                <a class="nav-link"
+                   href="{{ url_for('article_controller.article_add') }}">إضافة مقال جديد</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                   href="{{ url_for('article_controller.articles_list') }}">لائحة المقالات</a>
+              </li>
+              {% elif current_user.stripe_customers and current_user.stripe_customers[0].status == "active" %}
+              {% else %}
+              <li class="nav-item">
+                <a class="btn btn-sm mainButton"
+                   href="{{ url_for('subscribe_controller.subscription') }}">اشترك الآن</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+        <ul class="navbar-nav mr-auto d-flex align-items-center">
+          {% if current_user.is_authenticated %}
+            <li class="nav-item mr-auto">
+              <a class="nav-link" href="{{ url_for('auth_controller.user_account') }}">حسابي {{ current_user.username }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('auth_controller.user_logout') }}">تسجيل الخروج</a>
+            </li>
+          {% else %}
+            <li class="nav-item mr-auto">
+              <a class="nav-link" href="{{ url_for('auth_controller.user_login') }}">تسجيل الدخول</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"
+                 href="{{ url_for('auth_controller.user_register') }}">حساب جديد</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
